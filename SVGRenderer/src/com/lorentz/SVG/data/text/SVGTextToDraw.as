@@ -1,5 +1,7 @@
 package com.lorentz.SVG.data.text
 {
+	import com.lorentz.SVG.display.SVGDocument;
+
 	public class SVGTextToDraw
 	{
 		public var text:String;
@@ -12,6 +14,7 @@ package com.lorentz.SVG.data.text
 		public var color:uint = 0;
 		public var letterSpacing:Number = 0;
 		public var useEmbeddedFonts:Boolean;
+		public var document:SVGDocument;
 		
 		public function clone():SVGTextToDraw {
 			var copy:SVGTextToDraw = new SVGTextToDraw();
@@ -25,6 +28,7 @@ package com.lorentz.SVG.data.text
 			copy.color = color;
 			copy.letterSpacing = letterSpacing;
 			copy.useEmbeddedFonts = useEmbeddedFonts;
+			copy.document = document;
 			return copy;
 		}
 	}

@@ -6,6 +6,7 @@
 	import com.lorentz.SVG.events.SVGEvent;
 	import com.lorentz.SVG.parser.AsyncSVGParser;
 	import com.lorentz.SVG.text.FTESVGTextDrawer;
+	import com.lorentz.SVG.text.FontDefSVGTextDrawer;
 	import com.lorentz.SVG.text.ISVGTextDrawer;
 	import com.lorentz.SVG.utils.ICloneable;
 	import com.lorentz.SVG.utils.SVGUtil;
@@ -92,7 +93,7 @@
 		/**
 		 * Object used to draw texts 
 		 */		
-		public var textDrawer:ISVGTextDrawer = new FTESVGTextDrawer();
+		public var textDrawer:ISVGTextDrawer = new FontDefSVGTextDrawer();
 		
 		/*
 		* Set to autmaticly align the topLeft of the rendered svg content to the svgDocument origin. 

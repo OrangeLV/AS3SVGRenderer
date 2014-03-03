@@ -137,6 +137,7 @@ package com.lorentz.SVG.display.base
 			
 			textToDraw.text = text;
 			
+			textToDraw.document = document;
 			textToDraw.useEmbeddedFonts = document.useEmbeddedFonts;
 			textToDraw.parentFontSize = parentElement ? parentElement.currentFontSize : currentFontSize;
 			textToDraw.fontSize = currentFontSize;

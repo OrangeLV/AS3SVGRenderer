@@ -1,1 +1,4 @@
 SVGRenderer/bin/
+SVGRendererFDTest/.settings
+SVGRendererFDTest/bin-debug
+SVGRendererFDTest/html-template

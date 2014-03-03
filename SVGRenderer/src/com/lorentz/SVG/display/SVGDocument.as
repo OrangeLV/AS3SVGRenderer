@@ -1,4 +1,5 @@
 ﻿package com.lorentz.SVG.display {
+	import com.lorentz.SVG.data.font.SVGFont;
 	import com.lorentz.SVG.data.style.StyleDeclaration;
 	import com.lorentz.SVG.display.base.SVGContainer;
 	import com.lorentz.SVG.display.base.SVGElement;
@@ -37,6 +38,7 @@
 						
 		private var _definitions:Object = {};
 		private var _stylesDeclarations:Object = {};
+		private var _fonts:Object = {};
 		private var _firstValidationAfterParse:Boolean = false;
 		
 		private var _defaultBaseUrl:String;
@@ -218,6 +220,7 @@
 			svgTransform = null;
 			
 			_stylesDeclarations = {};
+			_fonts = {};
 			
 			style.clear();
 			
@@ -252,6 +255,27 @@
 		public function removeStyleDeclaration(selector:String):StyleDeclaration {
 			var value:StyleDeclaration = _stylesDeclarations[selector];
 			delete _stylesDeclarations[selector];
+			return value;
+		}
+		
+		public function listFonts():Vector.<String> {
+			var selectorsList:Vector.<String> = new Vector.<String>();
+			for(var id:String in _fonts)
+				selectorsList.push(id);
+			return selectorsList;
+		}
+		
+		public function addFont(selector:String, fontDeclaration:SVGFont):void {
+			_fonts[selector] = fontDeclaration;
+		}
+		
+		public function getFont(selector:String):SVGFont {
+			return _fonts[selector];
+		}
+		
+		public function removeFont(selector:String):SVGFont {
+			var value:SVGFont = _fonts[selector];
+			delete _fonts[selector];
 			return value;
 		}
 		
@@ -454,6 +478,11 @@
 			for each(var selector:String in listStyleDeclarations()){
 				var style:StyleDeclaration = getStyleDeclaration(selector);
 				c.addStyleDeclaration(selector, style.clone() as StyleDeclaration);
+			}
+			
+			for each(selector in listFonts()){
+				var font:SVGFont = getFont(selector);
+				c.addFont(selector, font.clone() as SVGFont);
 			}
 			
 			return c;

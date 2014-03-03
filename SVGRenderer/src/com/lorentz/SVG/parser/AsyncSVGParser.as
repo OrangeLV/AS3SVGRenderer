@@ -4,6 +4,10 @@ package com.lorentz.SVG.parser
 	import com.lorentz.SVG.data.filters.SVGColorMatrix;
 	import com.lorentz.SVG.data.filters.SVGFilterCollection;
 	import com.lorentz.SVG.data.filters.SVGGaussianBlur;
+	import com.lorentz.SVG.data.font.SVGFont;
+	import com.lorentz.SVG.data.font.SVGFontFace;
+	import com.lorentz.SVG.data.font.SVGGlyph;
+	import com.lorentz.SVG.data.font.SVGKern;
 	import com.lorentz.SVG.data.gradients.SVGGradient;
 	import com.lorentz.SVG.data.gradients.SVGLinearGradient;
 	import com.lorentz.SVG.data.gradients.SVGRadialGradient;
@@ -122,6 +126,11 @@ package com.lorentz.SVG.parser
 					case 'use' : obj = visitUse(elt); break;
 					case 'pattern' : obj = visitPattern(elt); break;
 					case 'switch' : obj = visitSwitch(elt); break;
+					case 'font' : obj = visitFont(elt, childVisits); break;
+					case 'font-face' : obj = visitFontFace(elt); break;
+					case 'missing-glyph' : obj = visitGlyph(elt); break;
+					case 'glyph' : obj = visitGlyph(elt); break;
+					case 'hkern' : obj = visitHKern(elt); break;
 				}
 			}
 			
@@ -406,6 +415,95 @@ package com.lorentz.SVG.parser
 		private function visitSwitch(elt:XML):SVGSwitch {
 			var obj:SVGSwitch = new SVGSwitch();
 			return obj;
+		}
+		
+		private function visitFont(elt:XML, childVisits:Array):SVGFont {
+			var font:SVGFont = new SVGFont();
+			
+			font.id = elt.@id;
+			font.horizAdvX = ("@horiz-adv-x" in elt) ? parseInt(elt.@["horiz-adv-x"]) : 0;
+			
+			//Inherits the href reference
+			var fontFaceElt:XML = elt.svg::["font-face"][0];
+			if(fontFaceElt){
+				childVisits.push(new VisitDefinition(fontFaceElt, function(child:SVGFontFace):void{
+					if(child){
+						font.fontFace = child;
+						_target.addFont(font.fontFace.fontFamily + "###" + font.fontFace.fontStyle + "###" + font.fontFace.fontWeight, font);
+					}					
+				}));
+			}
+			
+			var missingGlyphElt:XML = elt.svg::["missing-glyph"][0];
+			if(missingGlyphElt){
+				childVisits.push(new VisitDefinition(missingGlyphElt, function(child:SVGGlyph):void{
+					if(child){
+						font.missingGlyph = child;
+						child.font = font;
+					}					
+				}));
+			}
+			
+			var glyphEltList:XMLList = elt.svg::["glyph"];
+			for each (var glyphElt:XML in glyphEltList) 
+			{
+				childVisits.push(new VisitDefinition(glyphElt, function(child:SVGGlyph):void{
+					if(child){
+						child.font = font;
+						font.glyphList.push(child);
+					}					
+				}));
+			}
+			
+			var hKernEltList:XMLList = elt.svg::["hkern"];
+			for each (var hKernElt:XML in hKernEltList) 
+			{
+				childVisits.push(new VisitDefinition(hKernElt, function(child:SVGKern):void{
+					if(child){
+						font.registerHkern(child);
+					}					
+				}));
+			}
+			
+			return font;
+		}
+		
+		private function visitFontFace(elt:XML):SVGFontFace {
+			var fontFace:SVGFontFace = new SVGFontFace();
+			
+			fontFace.fontFamily = ("@font-family" in elt) ? elt.@["font-family"] : null;
+			fontFace.fontStyle = ("@font-style" in elt) ? elt.@["font-style"] : "normal";
+			fontFace.fontWeight = ("@font-weight" in elt) ? elt.@["font-weight"] : "normal";
+			fontFace.unitsPerEm = ("@units-per-em" in elt) ? parseInt(elt.@["units-per-em"]) : 1000;
+			fontFace.capHeight = ("@cap-eight" in elt) ? parseInt(elt.@["cap-eight"]) : 0;
+			fontFace.xHeight = ("@x-height" in elt) ? parseInt(elt.@["x-height"]) : 0;
+			fontFace.accentHeight = ("@accent-height" in elt) ? parseInt(elt.@["accent-height"]) : 0;
+			fontFace.ascent = ("@ascent" in elt) ? parseInt(elt.@["ascent"]) : 0;
+			fontFace.descent = ("@descent" in elt) ? parseInt(elt.@["descent"]) : 0;
+			
+			return fontFace;
+		}
+		
+		private function visitGlyph(elt:XML):SVGGlyph {
+			var glyph:SVGGlyph = new SVGGlyph();
+			glyph.unicode = ("@unicode" in elt) ? elt.@["unicode"] : null;
+			glyph.glyphName = ("@glyph-name" in elt) ? elt.@["glyph-name"] : null;
+			glyph.horizAdvX = ("@horiz-adv-x" in elt) ? parseInt(elt.@["horiz-adv-x"]) : 0;
+			
+			glyph.path = SVGParserCommon.parsePathData(elt.@d);
+			
+			return glyph;
+		}
+		
+		private function visitHKern(elt:XML):SVGKern {
+			var kern:SVGKern = new SVGKern();
+			kern.u1 = ("@u1" in elt) ? elt.@["u1"] : null;
+			kern.g1 = ("@g1" in elt) ? elt.@["g1"] : null;
+			kern.u2 = ("@u2" in elt) ? elt.@["u2"] : null;
+			kern.g2 = ("@g2" in elt) ? elt.@["g2"] : null;
+			kern.k = ("@k" in elt) ? parseInt(elt.@["k"]) : 0;
+
+			return kern;
 		}
 		
 		private function parseStyles(elt:XML):void {

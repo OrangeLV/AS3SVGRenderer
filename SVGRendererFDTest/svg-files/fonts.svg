@@ -52,6 +52,8 @@
             d="M129 0v700h500v-700h-500zM379 395l170 255h-340zM409 350l170 -255v510zM209 50h340l-170 255zM179 605v-510l170 255z" />
             <glyph glyph-name="space" unicode=" " horiz-adv-x="340" 
             />
+            <glyph glyph-name="zerowidthspace" unicode="&#8203;" horiz-adv-x="0" 
+            />
             <glyph glyph-name="exclam" unicode="!" horiz-adv-x="392" 
             d="M125 -11c-26 0 -54 22 -54 48c0 35 22 122 58 122c35 0 62 -30 62 -64c0 -35 -20 -106 -66 -106zM159 316l141 322c9 20 18 51 44 51c11 0 32 -7 42 -9c10 -3 39 -7 39 -23c0 -17 -21 -56 -29 -72l-179 -349c3 -6 5 -11 5 -17c0 -18 -13 -44 -33 -44c-23 0 -60 30 -60 54
             c0 23 21 66 30 87z" />
@@ -1097,5 +1099,5 @@
     <rect x="00" y="00" width="160" height="70" stroke="#777" fill="none"/>
 
     <text x="0" y="140" font-family="Embed Brush Script" font-size="70" fill="#d59">Some text in embedded "Brush Script" font.</text>
-    <text x="0" y="210" font-family="Embed Brush Script" font-size="70" fill="#d59">Ligatures: f i -> fi, f l -> fl</text>
+    <text x="0" y="210" font-family="Embed Brush Script" font-size="70" fill="#d59">Ligatures: f&#8203;i -> fi, f&#8203;l -> fl</text>
 </svg>

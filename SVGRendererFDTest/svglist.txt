@@ -6,3 +6,4 @@ opacity-inheritance.svg
 patterns.svg
 patterns2.svg
 stroke-miterlimit.svg
+fonts.svg

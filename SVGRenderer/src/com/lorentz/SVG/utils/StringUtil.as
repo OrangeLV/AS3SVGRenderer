@@ -170,5 +170,58 @@
 			}
 			return rs + s.substring(idx, len);	
 		}
+		
+		public static function cleanLayerId(value:String):String {
+			while(value.indexOf("_x") != -1) {
+				value = value.replace(/_x(\w+?)_/, function(match:String, code:String, ... rest):String {
+					return String.fromCharCode(parseInt(code, 16));
+				});
+			}
+			value = value.replace(/_[0-9]+_/, "");
+			
+			return value;
+		}
+		
+		public static function cleanGlyphUnicode(value:String):String {
+			while(value.indexOf("&#") != -1) {
+				value = value.replace(/&#x(\w+?);/, function(match:String, code:String):String {
+					return String.fromCharCode(parseInt(code, 16));
+				});
+				
+				value = value.replace(/&#(\w+?);/, function(match:String, code:String):String {
+					return String.fromCharCode(parseInt(code, 10));
+				});
+			}
+			
+			
+			return value;
+		}
+		
+//		public static function cleanLayerName(value:String):String {
+//			if(value.indexOf("_x") == -1) {
+//				return value;
+//			}
+//			
+//			value = value.replace(/_x(\w+)_/g, function(match:String, ... codes):String {
+//				return String.fromCharCode(parseInt(code, 16));
+//			});
+//			return value;
+//		}
+//		
+//		public static function cleanGlyphUnicode(value:String):String {
+//			if(value.indexOf("&#") == -1) {
+//				return value;
+//			}
+//			
+//			value = value.replace(/&#x(\w+);/g, function(match:String, code:String):String {
+//				return String.fromCharCode(parseInt(code, 16));
+//			});
+//			
+//			value = value.replace(/&#(\w+);/g, function(match:String, code:String):String {
+//				return String.fromCharCode(parseInt(code, 10));
+//			});
+//			
+//			return value;
+//		}
 	}
 }

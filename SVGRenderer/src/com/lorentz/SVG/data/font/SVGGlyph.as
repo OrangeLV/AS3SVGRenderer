@@ -3,6 +3,7 @@ package com.lorentz.SVG.data.font
 	import com.lorentz.SVG.data.path.SVGPathCommand;
 	import com.lorentz.SVG.drawing.GraphicsPathDrawer;
 	import com.lorentz.SVG.drawing.SVGPathRenderer;
+	import com.lorentz.SVG.utils.StringUtil;
 
 	/**
 	 * http://www.w3.org/TR/SVG/fonts.html#GlyphElement
@@ -44,15 +45,7 @@ package com.lorentz.SVG.data.font
 				return;
 			}
 			
-			value = value.replace(/&#x(\w+);/g, function(match:String, code:String):String {
-				return String.fromCharCode(parseInt(code, 16));
-			});
-			
-			value = value.replace(/&#(\w+);/g, function(match:String, code:String):String {
-				return String.fromCharCode(parseInt(code, 10));
-			});
-			
-			_unicode = value;
+			_unicode = StringUtil.cleanGlyphUnicode(value);
 			_length = value.length;
 		}
 

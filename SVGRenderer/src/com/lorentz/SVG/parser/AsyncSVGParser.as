@@ -136,21 +136,22 @@ package com.lorentz.SVG.parser
 			
 			if(obj is SVGElement){
 				var element:SVGElement = obj as SVGElement;
-								
-				element.id = elt.@id;
+				
+				var uniqueId:String = elt.@id;
+				element.id = StringUtil.cleanLayerId(uniqueId);
 				
 				element.metadata = elt.svg::metadata[0];
 				
 				//Save in definitions
-				if(element.id != null && element.id != "")
-					_target.addDefinition(element.id, element);
+				if(uniqueId != null && uniqueId != "")
+					_target.addDefinition(uniqueId, element);
 				
 				SVGUtil.presentationStyleToStyleDeclaration(elt, element.style);
 				if("@style" in elt)
 					element.style.fromString(elt.@style);
 				
 				if("@class" in elt)
-					element.svgClass = String(elt["@class"]);
+					element.svgClass = StringUtil.cleanLayerId(elt["@class"]);
 				
 				if("@transform" in elt)
 					element.svgTransform = String(elt.@transform);

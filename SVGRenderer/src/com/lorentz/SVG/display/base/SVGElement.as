@@ -76,6 +76,7 @@
 			_finalStyle.addEventListener(StyleDeclarationEvent.PROPERTY_CHANGE, finalStyle_propertyChangeHandler, false, 0, true);
 			
 			content = new Sprite();
+			content.name = "content";
 			addChild(content);
 		}
 		

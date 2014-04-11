@@ -670,7 +670,7 @@
 			copy.svgMask = svgMask;
 			_style.cloneOn(copy.style);
 			
-			copy.id = "????  Clone of \"" + id + "\"";
+			copy.id = id;
 			
 			copy.svgTransform = svgTransform;
 			

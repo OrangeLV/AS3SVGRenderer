@@ -177,7 +177,7 @@
 					return String.fromCharCode(parseInt(code, 16));
 				});
 			}
-			value = value.replace(/_[0-9]+_/, "");
+			value = value.replace(/_[0-9]+_$/, "");
 			
 			return value;
 		}

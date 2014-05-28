@@ -26,6 +26,12 @@ package com.lorentz.SVG.data.font
 			var pathRenderer:SVGPathRenderer = new SVGPathRenderer(value); 
 			_drawer = new GraphicsPathDrawer();
 			pathRenderer.render(_drawer);
+			
+			var pathData:Vector.<Number> = _drawer.pathData;
+			for (var i:int = pathData.length-1; i >= 0; i-=2) 
+			{
+				pathData[i] *= -1;
+			}
 		}
 
 		public function get drawer():GraphicsPathDrawer

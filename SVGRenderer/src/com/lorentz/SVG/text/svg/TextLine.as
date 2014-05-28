@@ -87,7 +87,6 @@ package com.lorentz.SVG.text.svg
 			{
 				var glyph:SVGGlyph = _glyphList[i];
 				var shape:GlyphShape = _shapeList[i];
-				shape.scaleY = -1;
 				shape.glyph = glyph;
 				shape.color = color;
 				shape.updateGraphics();

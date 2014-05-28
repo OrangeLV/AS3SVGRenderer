@@ -476,10 +476,10 @@ package com.lorentz.SVG.parser
 			fontFace.fontStyle = ("@font-style" in elt) ? elt.@["font-style"] : "normal";
 			fontFace.fontWeight = ("@font-weight" in elt) ? elt.@["font-weight"] : "normal";
 			fontFace.unitsPerEm = ("@units-per-em" in elt) ? parseInt(elt.@["units-per-em"]) : 1000;
-			fontFace.capHeight = ("@cap-eight" in elt) ? parseInt(elt.@["cap-eight"]) : 0;
+			fontFace.capHeight = ("@cap-height" in elt) ? parseInt(elt.@["cap-height"]) : 0;
 			fontFace.xHeight = ("@x-height" in elt) ? parseInt(elt.@["x-height"]) : 0;
-			fontFace.accentHeight = ("@accent-height" in elt) ? parseInt(elt.@["accent-height"]) : 0;
-			fontFace.ascent = ("@ascent" in elt) ? parseInt(elt.@["ascent"]) : 0;
+			fontFace.ascent = ("@ascent" in elt) ? parseInt(elt.@["ascent"]) : fontFace.unitsPerEm;
+			fontFace.accentHeight = ("@accent-height" in elt) ? parseInt(elt.@["accent-height"]) : fontFace.ascent;
 			fontFace.descent = ("@descent" in elt) ? parseInt(elt.@["descent"]) : 0;
 			
 			return fontFace;

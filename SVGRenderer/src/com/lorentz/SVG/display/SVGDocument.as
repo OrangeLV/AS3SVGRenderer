@@ -73,6 +73,11 @@
 		public var validateAfterParse:Boolean = true;
 		
 		/**
+		 * Determines if the document should parse the XML synchronous, without spanning processing on multiple frames
+		 */
+		public var forceSynchronousParse: Boolean = false;
+		
+		/**
 		 * Default value for attribute fontStyle on SVGDocuments, and also is used an embedded font is missing, and missingFontAction on svgDocument is USE_DEFAULT.
 		 */		
 		public var defaultFontName:String = "Verdana";
@@ -185,7 +190,7 @@
 			
 			_parser = new AsyncSVGParser(this, svg);
 			_parser.addEventListener(Event.COMPLETE, parser_completeHandler);
-			_parser.parse();
+			_parser.parse(forceSynchronousParse);
 		}
 
 		

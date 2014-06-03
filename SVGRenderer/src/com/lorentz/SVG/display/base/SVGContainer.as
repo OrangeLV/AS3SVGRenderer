@@ -1,5 +1,6 @@
 package com.lorentz.SVG.display.base
 {
+	import com.lorentz.SVG.display.SVGSymbol;
 
 	public class SVGContainer extends SVGElement
 	{
@@ -29,6 +30,9 @@ package com.lorentz.SVG.display.base
 					content.removeChildAt(0);
 				
 				for each(var element:SVGElement in _elements){
+					if(element is SVGSymbol) {
+						continue;
+					}
 					content.addChild(element);
 				}
 			}

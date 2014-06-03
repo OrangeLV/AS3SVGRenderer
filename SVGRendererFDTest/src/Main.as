@@ -1,13 +1,21 @@
 package 
 {
-	import com.bit101.components.*;
-	import com.lorentz.SVG.display.*;
-	import com.lorentz.SVG.events.*;
-	import com.lorentz.processing.*;
-	import flash.display.*;
-	import flash.events.*;
-	import flash.geom.*;
-	import flash.net.*;
+	import com.bit101.components.CheckBox;
+	import com.bit101.components.Label;
+	import com.bit101.components.List;
+	import com.bit101.components.RadioButton;
+	import com.bit101.components.VBox;
+	import com.lorentz.processing.ProcessExecutor;
+	
+	import flash.display.BlendMode;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	
 	public class Main extends Sprite 
 	{
@@ -92,7 +100,7 @@ package
 				item.load(reloadOnSelect.selected);
 				
 				pngParent.addChild(item.png);
-				svgParent.addChild(item.svg);
+				svgParent.addChild(item.content);
 			}
 			
 			onSmthChanged(null);
@@ -166,38 +174,60 @@ package
 }
 
 import com.lorentz.SVG.display.SVGDocument;
+import com.lorentz.SVG.events.SVGEvent;
+
 import flash.display.Loader;
+import flash.display.Sprite;
 import flash.net.URLRequest;
+import flash.utils.getTimer;
 
 class FileListItem
 {
 	public var label:String;
-	public var svg:SVGDocument; 
+	public var content:Sprite; 
+	protected var svg:SVGDocument; 
 	public var png:Loader;
+	protected var svgClone:SVGDocument;
 	
 	public function FileListItem(fname:String) 
 	{
 		label = fname;
+		content = new Sprite()
 	}
 	
 	public function load(reload:Boolean):void 
 	{
 		if (reload && svg)
 		{
+			content.removeChildren();
 			svg.clear();
 			svg = null;
+			if(svgClone) svgClone.clear();
+			svgClone = null;
 		}
 		
 		if (!svg)
 		{
 			svg = new SVGDocument();
+			svg.addEventListener(SVGEvent.RENDERED, onSvgRendered);
 			svg.load("../svg-files/" + label);
+//			svg.x = 512;
+			content.addChild(svg);
 		}
 		if (!png)
 		{
 			png = new Loader();
 			png.load(new URLRequest("../svg-files/" + label + ".png"));
 		}
+	}
+	
+	protected function onSvgRendered(event:SVGEvent):void
+	{
+		var startTime:uint = getTimer();
+		svgClone = SVGDocument(svg.clone());
+		svgClone.x = 512;
+		trace("parsed in", getTimer() - startTime, "ms");
+		content.addChild(svgClone);
 	}
 }
 

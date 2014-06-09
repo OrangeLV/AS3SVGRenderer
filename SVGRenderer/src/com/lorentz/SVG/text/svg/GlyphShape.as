@@ -2,25 +2,35 @@ package com.lorentz.SVG.text.svg
 {
 	import com.lorentz.SVG.data.font.SVGGlyph;
 	
+	import flash.display.CapsStyle;
+	import flash.display.GraphicsSolidFill;
+	import flash.display.GraphicsStroke;
+	import flash.display.JointStyle;
+	import flash.display.LineScaleMode;
 	import flash.display.Shape;
 	
 	public class GlyphShape extends Shape
 	{
-		private var _isDirty:Boolean;
+		public var boxWidth		:Number;
+		public var boxHeight	:Number;
 		
-		private var _glyph:SVGGlyph;
+		protected var _isDirty	:Boolean;
+		
+		protected var _glyph:SVGGlyph;
 		public function get glyph():SVGGlyph { return _glyph; }
-		
 		public function set glyph(value:SVGGlyph):void
 		{
 			if (_glyph == value)
 				return;
 			_glyph = value;
+			_isDirty = true;
+			
+			boxWidth = glyph.horizAdvX;
+			boxHeight = glyph.font.fontFace.ascent;
 		}
 		
-		private var _color:uint;
+		protected var _color:uint;
 		public function get color():uint { return _color; }
-		
 		public function set color(value:uint):void
 		{
 			if (_color == value)
@@ -29,9 +39,19 @@ package com.lorentz.SVG.text.svg
 			_isDirty = true;
 		}
 		
-		private var _isDebug:Boolean;
-		public function get isDebug():Boolean { return _isDebug; }
+		protected var _strokeSize:Number;
+		public function get strokeSize():Number { return _strokeSize; }
+		public function set strokeSize(value:Number):void
+		{
+			if (_strokeSize == value)
+				return;
+			_strokeSize = value;
+			_isDirty = true;
+		}
 		
+		
+		protected var _isDebug:Boolean;
+		public function get isDebug():Boolean { return _isDebug; }
 		public function set isDebug(value:Boolean):void
 		{
 			if (_isDebug == value)
@@ -40,16 +60,27 @@ package com.lorentz.SVG.text.svg
 			_isDirty = true;
 		}
 		
+		protected function get pathData():Vector.<Number>
+		{
+			return glyph.drawer.pathData;
+		}
+		
+		
+		public function get isDirty():Boolean
+		{
+			return _isDirty;
+		}
 		
 		public function updateGraphics():void
 		{
-			if(!_isDirty){
+			if(!isDirty){
 				return;
 			}
 			
 			graphics.clear();
+			graphics.lineStyle(strokeSize, color, 1, false, LineScaleMode.NORMAL, CapsStyle.SQUARE, JointStyle.MITER);
 			graphics.beginFill(color);
-			graphics.drawPath(glyph.drawer.commands, glyph.drawer.pathData);
+			graphics.drawPath(glyph.drawer.commands, pathData);
 			graphics.endFill();
 			
 			if(_isDebug) {

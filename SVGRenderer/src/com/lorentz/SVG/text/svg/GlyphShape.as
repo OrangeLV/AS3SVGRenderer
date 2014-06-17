@@ -3,8 +3,6 @@ package com.lorentz.SVG.text.svg
 	import com.lorentz.SVG.data.font.SVGGlyph;
 	
 	import flash.display.CapsStyle;
-	import flash.display.GraphicsSolidFill;
-	import flash.display.GraphicsStroke;
 	import flash.display.JointStyle;
 	import flash.display.LineScaleMode;
 	import flash.display.Shape;
@@ -26,7 +24,7 @@ package com.lorentz.SVG.text.svg
 			_isDirty = true;
 			
 			boxWidth = glyph.horizAdvX;
-			boxHeight = glyph.font.fontFace.ascent;
+			boxHeight = glyph.font.fontFace.capHeight;
 		}
 		
 		protected var _color:uint;
@@ -85,7 +83,7 @@ package com.lorentz.SVG.text.svg
 			
 			if(_isDebug) {
 				graphics.lineStyle(1);
-				graphics.drawRect(0, 0, glyph.horizAdvX, glyph.font.fontFace.ascent);
+				graphics.drawRect(0, 0, glyph.horizAdvX, -glyph.font.fontFace.capHeight);
 			}
 			
 			_isDirty = false;

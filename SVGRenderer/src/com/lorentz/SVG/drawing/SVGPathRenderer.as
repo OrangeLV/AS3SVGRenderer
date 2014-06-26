@@ -73,6 +73,10 @@
 						closePath();
 						break;
 				}
+				
+				if("CcSsQqTt".indexOf(pathCommand.type) == -1) {
+					lastControlPoint = null;
+				}
 			}
 		}
 		

@@ -175,8 +175,8 @@ package com.lorentz.SVG.parser
 					var container:SVGContainer = element as SVGContainer;
 					
 					for each(var childElt:XML in elt.elements()) {
-						childVisits.push(new VisitDefinition(childElt, function(child:SVGElement):void{
-							if(child){
+						childVisits.push(new VisitDefinition(childElt, function(child:*):void{
+							if(child is SVGElement){
 								container.addElement(child);
 							}					
 						}));

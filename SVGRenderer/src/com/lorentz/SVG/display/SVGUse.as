@@ -68,6 +68,9 @@
 		}
 				
 		override protected function commitProperties():void {
+			x = svgX ? getViewPortUserUnit(svgX, SVGUtil.WIDTH) : 0;
+			y = svgY ? getViewPortUserUnit(svgY, SVGUtil.HEIGHT) : 0;
+			
 			super.commitProperties();
 
 			if(_svgHrefChanged){
@@ -89,14 +92,6 @@
 			}
 			
 			if(_includedElement){
-				if(svgTransform) {
-					svgX = svgY = null;
-					svgWidth = svgHeight = null;
-				}
-				_includedElement.x = svgX ? getViewPortUserUnit(svgX, SVGUtil.WIDTH) : 0;
-				_includedElement.y = svgY ? getViewPortUserUnit(svgY, SVGUtil.HEIGHT) : 0;
-				_includedElement.svgTransform += " " + svgTransform;
-				
 				if(_includedElement is SVG)
 				{
 					var includedSVG:SVG = _includedElement as SVG;
@@ -106,10 +101,6 @@
 						includedSVG.svgHeight = svgHeight;
 				}
 			}
-		}
-		
-		override protected function get shouldApplySvgTransform():Boolean {
-			return false;
 		}
 		
 		override protected function getContentBox():Rectangle {

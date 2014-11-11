@@ -440,6 +440,10 @@
 					_svgFilterChanged = true;
 					invalidateProperties();
 					break;
+				case "clip-path" :
+					_svgClipPathChanged = true;
+					invalidateProperties();
+					break;
 			}
 		}
 		
@@ -590,9 +594,10 @@
 					}
 				}
 				
-				if (svgClipPath != null && svgClipPath != "" && svgClipPath != "none") // clip-path
+				var clipPathValue:String = finalStyle.getPropertyValue("clip-path") || svgClipPath;
+				if (clipPathValue != null && clipPathValue != "" && clipPathValue != "none") // clip-path
 				{ 
-					var clipPathId:String = SVGUtil.extractUrlId(svgClipPath);
+					var clipPathId:String = SVGUtil.extractUrlId(clipPathValue);
 					
 					clip = document.getDefinitionClone(clipPathId) as SVGElement;
 					

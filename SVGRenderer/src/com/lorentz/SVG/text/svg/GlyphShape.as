@@ -74,10 +74,12 @@ package com.lorentz.SVG.text.svg
 			if(!isDirty){
 				return;
 			}
+			var isTransparent:Boolean = color == uint.MAX_VALUE;
+			var alpha:Number = isTransparent ? 0 : 1;
 			
 			graphics.clear();
-			graphics.lineStyle(strokeSize, color, 1, false, LineScaleMode.NORMAL, CapsStyle.SQUARE, JointStyle.MITER);
-			graphics.beginFill(color);
+			graphics.lineStyle(strokeSize, color, alpha, false, LineScaleMode.NORMAL, CapsStyle.SQUARE, JointStyle.MITER);
+			graphics.beginFill(color, alpha);
 			graphics.drawPath(glyph.drawer.commands, pathData);
 			graphics.endFill();
 			
